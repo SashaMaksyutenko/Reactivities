@@ -2,6 +2,9 @@ import { makeAutoObservable, runInAction} from "mobx"
 import { Activity } from "../models/activity"
 import agent from "../api/agent";
 import { v4 as uuid } from 'uuid';
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
+import { format } from "date-fns";
 export default class ActivityStore{
     activityRegistry=new Map<string,Activity>();
     selectedActivity:Activity | undefined=undefined;
@@ -13,12 +16,12 @@ export default class ActivityStore{
     }
     get activitiesByDate(){
         return Array.from(this.activityRegistry.values()).sort((a,b)=>
-        Date.parse(a.date)-Date.parse(b.date));
+        a.date!.getTime()-b.date!.getTime());
     }
     get groupedActivities(){
         return Object.entries(
             this.activitiesByDate.reduce((activities,activity)=>{
-                const date=activity.date;
+                const date=format(activity.date!,'dd MMM yyyy');
                 activities[date]=activities[date]?[...activities[date],activity]:[activity];
                 return activities;
             },{}as{[key:string]:Activity[]})
@@ -58,10 +61,9 @@ export default class ActivityStore{
                 this.setLoadingInitial(false);
             }
         }
-
     }
     private setActivity=(activity:Activity)=>{
-        activity.date=activity.date.split('T')[0];
+        activity.date=new Date(activity.date!)
         this.activityRegistry.set(activity.id,activity);
     }
     private getActivity=(id:string)=>{
@@ -70,7 +72,6 @@ export default class ActivityStore{
     setLoadingInitial=(state:boolean)=>{
         this.loadingInitial=state;
     }
-    
     createActivity=async (activity:Activity)=>{
         this.loading=true;
         activity.id=uuid();
