@@ -1,8 +1,9 @@
 import React from "react";
-import { Button, Item, Segment,Icon } from "semantic-ui-react";
+import { Button, Item, Segment,Icon, Label } from "semantic-ui-react";
 import { Activity } from "../../../app/models/activity";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
+import ActivityListItemAttendee from "./ActivityListItemAttendee";
 interface Props{
     activity:Activity;
 }
@@ -17,7 +18,21 @@ export default function ActivityListItem({activity}:Props){
                             <Item.Header as={Link} to={`/activities/${activity.id}`}
                             >{activity.title}
                             </Item.Header>
-                            <Item.Description>Hosted by Bob</Item.Description>
+                            <Item.Description>Hosted by {activity.host?.displayname}</Item.Description>
+                            {activity.isHost &&(
+                                <Item.Description>
+                                    <Label basic color='orange'>
+                                        You are hosting this activity
+                                    </Label>
+                                </Item.Description>
+                            )}
+                            {activity.isGoing && !activity.isHost && (
+                                <Item.Description>
+                                    <Label basic color='green'>
+                                        You are going to this activity
+                                    </Label>
+                                </Item.Description>
+                            )}
                         </Item.Content>
                     </Item>
                 </Item.Group>
@@ -29,7 +44,7 @@ export default function ActivityListItem({activity}:Props){
                 </span>
             </Segment>
             <Segment secondary>
-                Attendees go here
+                <ActivityListItemAttendee attendees={activity.attendees!}/>
             </Segment>
             <Segment clearing>
                 <span>{activity.description}</span>
