@@ -6,7 +6,6 @@ import { Activity } from '../../../app/models/activity'
 interface Props {
     activity: Activity
 }
-
 export default observer(function ActivityDetailedSidebar ({activity: {attendees, host}}: Props) {
     if (!attendees) return null;
     return (
