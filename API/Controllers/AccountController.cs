@@ -62,9 +62,10 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser(){
             var user=await _userManager.Users.Include(p=>p.Photos).FirstOrDefaultAsync(x=>x.Email==User.FindFirstValue(ClaimTypes.Email));
+            if(user==null) return NotFound();
             return CreateUserObject(user);
         }
-        private UserDto CreateUserObject (AppUser user)
+        public UserDto CreateUserObject (AppUser user)
         {
             return new UserDto
             {
