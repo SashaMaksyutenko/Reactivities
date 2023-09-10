@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { User, UserformValues } from "../models/user";
+import { User, UserFormValues } from "../models/user";
 import agent from "../api/agent";
 import { store } from "./store";
 import { router } from "../router/Routes";
@@ -12,7 +12,7 @@ makeAutoObservable(this)
     get isLoggedIn(){
         return !!this.user
     }
-    login=async(creds:UserformValues)=>{
+    login=async(creds:UserFormValues)=>{
         try{
             const user=await agent.Account.login(creds);
             store.commonStore.setToken(user.token);
@@ -23,7 +23,7 @@ makeAutoObservable(this)
             throw error;
         }
     }
-    register=async(creds:UserformValues)=>{
+    register= async (creds:UserFormValues)=>{
         try{
             const user=await agent.Account.register(creds);
             store.commonStore.setToken(user.token);
@@ -33,6 +33,10 @@ makeAutoObservable(this)
         }catch(error){
             throw error;
         }
+    }
+    setImage=(image:string)=>{
+        if(this.user)
+        this.user.image=image;
     }
     logout=()=>{
         store.commonStore.setToken(null);

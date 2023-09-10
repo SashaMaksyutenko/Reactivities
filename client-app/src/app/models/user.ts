@@ -4,7 +4,7 @@ export interface User{
     token:string;
     image?:string;
 }
-export interface UserformValues{
+export interface UserFormValues{
     email:string;
     password:string;
     displayName?:string;
