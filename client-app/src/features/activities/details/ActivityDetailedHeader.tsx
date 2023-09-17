@@ -20,7 +20,6 @@ const activityImageTextStyle = {
 interface Props {
     activity: Activity
 }
-
 export default observer(function ActivityDetailedHeader({ activity }: Props) {
     const { activityStore: { updateAttendeance, loading, cancelActivityToggle } } = useStore();
     return (
@@ -69,7 +68,6 @@ export default observer(function ActivityDetailedHeader({ activity }: Props) {
                             Manage Event
                         </Button>
                     </>
-
                 ) : activity.isGoing ? (
                     <Button onClick={updateAttendeance} 
                         loading={loading}>Cancel attendance</Button>

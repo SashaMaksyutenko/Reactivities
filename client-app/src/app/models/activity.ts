@@ -1,5 +1,4 @@
 import { Profile } from "./profile";
-
 export interface Activity {
     id: string;
     title: string;
@@ -12,7 +11,7 @@ export interface Activity {
     isCancelled?: boolean;
     isGoing?: boolean;
     isHost?: boolean
-    attendees?: Profile[]
+    attendees: Profile[]
     host?: Profile;
 }
 export class ActivityFormValues
@@ -35,7 +34,6 @@ export class ActivityFormValues
         this.city = activity.city;
       }
     }
-
   }
   export class Activity implements Activity {
     constructor(init?: ActivityFormValues) {

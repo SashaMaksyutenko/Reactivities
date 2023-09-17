@@ -32,7 +32,7 @@ namespace Application.Photos
             {
                 var photoUploadResult = await _photoAccessor.AddPhoto(request.File);
                 var user = await _context.Users.Include(p => p.Photos)
-                    .FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUserName());
+                    .FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUsername());
 
                 var photo = new Photo
                 {
