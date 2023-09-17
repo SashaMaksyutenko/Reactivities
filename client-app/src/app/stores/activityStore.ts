@@ -3,6 +3,7 @@ import { Activity, ActivityFormValues } from "../models/activity";
 import agent from "../api/agent";
 import { store } from "./store";
 import { Profile } from "../models/profile";
+import { constants } from "buffer";
 export default class ActivityStore {
     activityRegistry = new Map<string, Activity>();
     selectedActivity?: Activity = undefined;
@@ -42,6 +43,7 @@ export default class ActivityStore {
         let activity = this.getActivity(id);
         if (activity) {
             this.selectedActivity = activity;
+            console.log(activity)
             return activity;
         }
         else {
@@ -49,6 +51,7 @@ export default class ActivityStore {
             try {
                 activity = await agent.Activities.details(id);
                 this.setActivity(activity);
+                console.log("trace 2",activity)
                 runInAction(() => this.selectedActivity = activity);
                 this.setLoadingInitial(false);
                 return activity;
