@@ -2,6 +2,7 @@ import { Segment, List, Label, Item, Image } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { Activity } from "../../../app/models/activity";
+import { Fragment } from "react";
 
 interface Props {
   activity: Activity;
@@ -25,7 +26,8 @@ export default observer(function ActivityDetailedSidebar({
       <Segment attached>
         <List relaxed divided>
           {attendees.map((attendee) => (
-            <Item style={{ position: "relative" }} key={attendee.username}>
+
+            <Item style={{ position: "relative" }} key={(attendee.username)} >
               {attendee.username === host?.username && (
                 <Label
                   style={{ position: "absolute" }}

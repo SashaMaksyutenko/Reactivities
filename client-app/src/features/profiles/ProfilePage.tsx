@@ -7,15 +7,15 @@ import { useStore } from "../../app/stores/store";
 import { useEffect } from "react";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 export default observer(function ProfilePage(){
-    const{username}=useParams<{username:string}>();
+    const{userName}=useParams<{userName:string}>();
     const {profileStore}=useStore();
     const {loadingProfile, loadProfile, profile,setActiveTab} = profileStore;
     useEffect(()=>{
-        if(username) loadProfile(username);
+        if(userName) loadProfile(userName);
         return()=>{
             setActiveTab(0);
         }
-    },[loadProfile,username])
+    },[loadProfile,userName])
     if(loadingProfile) return <LoadingComponent content='Loading Profile...'/>
     return (
         <Grid>

@@ -9,7 +9,7 @@ interface Props {
 export default observer(function FollowButton({ profile }: Props) {
     const {profileStore,userStore}=useStore();
     const {updateFollowing,loading}=profileStore;
-    if(userStore.user?.username===profile.username) return null;
+    if(userStore.user?.userName===profile.username) return null;
     function handleFollow(e:SyntheticEvent,username:string){
         e.preventDefault();
         profile.following ? updateFollowing(username, false) : updateFollowing(username,true);
@@ -20,7 +20,7 @@ export default observer(function FollowButton({ profile }: Props) {
         <Button 
             fluid 
             color="teal" 
-            content={profile.following ? "Following" : "Not following"}
+            content={profile.username ? "Following" : "Not following"}
         />
       </Reveal.Content>
       <Reveal.Content hidden style={{ width: "100%" }}>
