@@ -32,7 +32,7 @@ export default observer(function ActivityForm() {
     }, [id, loadActivity])
     function handleFormSubmit(activity: ActivityFormValues) {
         if (!activity.id) {
-            let newActivity = {
+            const newActivity = {
                 ...activity,
                 id: uuid()
             }

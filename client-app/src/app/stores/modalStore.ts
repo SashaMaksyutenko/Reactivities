@@ -1,5 +1,4 @@
 import { makeAutoObservable } from "mobx"
-import { JsxElement } from "typescript";
 interface Modal{
     open:boolean;
     body:JSX.Element | null;
