@@ -9,7 +9,7 @@ export default function TestErrors() {
         axios.get('/buggy/not-found').catch(err => console.log(err.response));
     }
     function handleBadRequest() {
-        axios.get('buggy/bad-request').catch(err => console.log(err.response));
+        axios.get('/buggy/bad-request').catch(err => console.log(err.response));
     }
     function handleServerError() {
         axios.get('/buggy/server-error').catch(err => console.log(err.response));
