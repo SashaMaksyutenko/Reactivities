@@ -11,6 +11,7 @@ primary_region = "sin"
   ASPNETCORE_URLS="http://+:8080"
   Cloudinary__CloudName="dzywymhes"
   Cloudinary__ApiKey="143269487666724"
+  Facebook_AppId="248155031337310"
 
 [http_service]
   internal_port = 8080
