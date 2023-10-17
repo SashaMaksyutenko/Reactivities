@@ -7,6 +7,7 @@ export default class UserStore {
     user: User | null = null;
     fbLoading=false;
     refreshTokenTimeout?:number;
+
     constructor() {
         makeAutoObservable(this)
     }
