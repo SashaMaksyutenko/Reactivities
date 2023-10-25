@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Infrastructure.Security;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 
 namespace API.Extensions
@@ -16,8 +17,11 @@ namespace API.Extensions
             services.AddIdentityCore<AppUser>(opt=>{
                 opt.Password.RequireNonAlphanumeric=false;
                 opt.User.RequireUniqueEmail=true;
+                opt.SignIn.RequireConfirmedEmail=true;
             })
-            .AddEntityFrameworkStores<DataContext>();
+            .AddEntityFrameworkStores<DataContext>()
+            .AddSignInManager<SignInManager<AppUser>>()
+            .AddDefaultTokenProviders();
             var key=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(opt =>{

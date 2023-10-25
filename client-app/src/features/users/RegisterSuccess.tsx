@@ -1,0 +1,28 @@
+import useQuery from "../../app/util/hooks";
+import agent from "../../app/api/agent";
+import { toast } from "react-toastify";
+import { Button, Header, Icon, Segment } from "semantic-ui-react";
+
+export default function RegisterSuccess(){
+    const email = useQuery().get('email') as string;
+    function handleConfirmEmailResend(){
+        agent.Account.resendEmailConfirm(email).then(()=>{
+            toast.success('Verification email resent - please check your email');
+        }).catch(error=>console.log(error));
+    }
+    return(
+        <Segment placeholder textAlign="center">
+            <Header icon color="green">
+                <Icon name='check'/>
+                Successfully registered! You are not Pigeon
+            </Header>
+            <p>Please check your email (including junk email) for the verification email</p>
+            {email &&
+                <>
+                    <p>Didn't received email? Click the bellow button to recend</p>
+                    <Button primary onClick={handleConfirmEmailResend} content='Recend email' size="huge"/>
+                </>
+            }
+        </Segment>
+    )
+}
