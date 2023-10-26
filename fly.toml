@@ -12,6 +12,7 @@ primary_region = "sin"
   Cloudinary__CloudName="dzywymhes"
   Cloudinary__ApiKey="143269487666724"
   Facebook_AppId="248155031337310"
+  Ethereal_Mail="elva.koelpin67@ethereal.email"
 
 [http_service]
   internal_port = 8080

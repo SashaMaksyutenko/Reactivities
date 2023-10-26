@@ -35,7 +35,7 @@ export default class UserStore {
             store.modalStore.closeModal();
         } catch (error) {
             if(isAxiosError(error) && error?.response?.status===400)throw error;
-           // store.modalStore.closeModal();
+            store.modalStore.closeModal();
             console.log(500);
         }
     }

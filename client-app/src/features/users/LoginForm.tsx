@@ -9,7 +9,7 @@ export default observer(function LoginForm() {
   return (
     <Formik
       initialValues={{ email: "", password: "", error: null }}
-      onSubmit={(values, { setErrors }) =>
+      onSubmit={(values, { setErrors}) =>
         userStore
           .login(  {
             email: values.email,

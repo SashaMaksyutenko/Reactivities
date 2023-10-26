@@ -48,32 +48,38 @@ namespace API.Controllers
                 await SetRefreshToken(user);
                 return CreateUserObject(user);
             }
-            return Unauthorized("Invalid password");
+            return Unauthorized("Invalid password Голубе сизокрилий");
         }
         [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>>Register(RegisterDto registerDto){
-            if (await _userManager.Users.AnyAsync(x=>x.Email==registerDto.Email)){
-                ModelState.AddModelError("email","Email taken");
-                return ValidationProblem();
-            }
             if (await _userManager.Users.AnyAsync(x=>x.UserName==registerDto.UserName)){
                 ModelState.AddModelError("username","Username taken");
+                return ValidationProblem();
+            }
+            if (await _userManager.Users.AnyAsync(x=>x.Email==registerDto.Email)){
+                ModelState.AddModelError("email","Email taken");
                 return ValidationProblem();
             }
             var user=new AppUser{
                 DisplayName=registerDto.DisplayName,
                 Email=registerDto.Email,
                 UserName=registerDto.UserName
-            };
-            var result=await _userManager.CreateAsync(user,registerDto.Password);
-            if(!result.Succeeded) return BadRequest("Problem registering user");
+            };  
+            // send email before creating user
             var origin=Request.Headers["origin"];
             var token=await _userManager.GenerateEmailConfirmationTokenAsync(user);
             token=WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
             var verifyUrl=$"{origin}/account/verifyEmail?token={token}&email={user.Email}";
             var message = $"<p>Please click the below link to verify your email address:</p><p><a href='{verifyUrl}'</a>{verifyUrl}</p>'";
-            await _emailSender.SendEmailAsync(user.Email,"Please verify Email",message);
+            var emailSent =  await _emailSender.SendEmailAsync(user.Email,"Please verify Email",message);
+            if(!emailSent)
+            {
+               return Ok("Problem registering user - could not send email, please check email and try again");
+            }
+            // create user
+            var result=await _userManager.CreateAsync(user,registerDto.Password);
+            if(!result.Succeeded) return BadRequest("Problem registering user");
             return Ok("Registration success - please verify email");
         }
         [AllowAnonymous]
@@ -97,7 +103,10 @@ namespace API.Controllers
             token=WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
             var verifyUrl=$"{origin}/account/verifyEmail?token={token}&email={user.Email}";
             var message = $"<p>Please click the below link to verify your email address:</p><p><a href='{verifyUrl}'</a>{verifyUrl}</p>'";
-            await _emailSender.SendEmailAsync(user.Email,"Please verify Email",message);
+            var emailSent = await _emailSender.SendEmailAsync(user.Email,"Please verify Email",message);  if(!emailSent)
+            {
+               return Ok("Problem resending user email -  please check email and try again");
+            }
             return Ok("Email verification link resent");
         }
         [Authorize]
