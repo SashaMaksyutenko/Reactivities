@@ -67,12 +67,15 @@ namespace API.Controllers
                 UserName=registerDto.UserName
             };  
             // send email before creating user
-            var origin=Request.Headers["origin"];
-            var token=await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            token=WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-            var verifyUrl=$"{origin}/account/verifyEmail?token={token}&email={user.Email}";
-            var message = $"<p>Please click the below link to verify your email address:</p><p><a href='{verifyUrl}'</a>{verifyUrl}</p>'";
-            var emailSent =  await _emailSender.SendEmailAsync(user.Email,"Please verify Email",message);
+            var origin = Request.Headers["origin"];
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+
+            var verifyUrl = $"{origin}/account/verifyEmail?token={token}&email={user.Email}";
+            var message = "<p>Please Click the below link to verify your email address</p>";
+            message += $"<p><a href='{verifyUrl}'>Click here to to verify your email address</a></p>";
+
+            var emailSent = await _emailSender.SendEmailAsync(user.Email, "Please verify your email address", message);
             if(!emailSent)
             {
                return Ok("Problem registering user - could not send email, please check email and try again");
